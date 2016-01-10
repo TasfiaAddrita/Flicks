@@ -14,6 +14,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     var movies: [NSDictionary]?
+    var refreshControl: UIRefreshControl?
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+    
+    func onRefresh() {
+        delay(2, closure: {
+            self.refreshControl!.endRefreshing()
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +59,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 }
         });
         task.resume()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl!.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl!, atIndex: 0)
+        
+        refreshControl?.backgroundColor = UIColor.blackColor()
         
         // Do any additional setup after loading the view.
     }

@@ -8,14 +8,22 @@
 
 import UIKit
 import AFNetworking
+import KVNProgress
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var movies: [NSDictionary]?
-    var refreshControl: UIRefreshControl?
+    var filteredData : [NSDictionary]!
     
+    var refreshControl: UIRefreshControl?
+    var configuration: KVNProgressConfiguration = KVNProgressConfiguration()
+    
+    /*------------------------------------------
+     * Refresh functions
+     -----------------------------------------*/
     func delay(delay:Double, closure:()->()) {
         dispatch_after(
             dispatch_time(
@@ -33,9 +41,18 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
+        filteredData = movies
+        
+        //configuration.backgroundFillColor = UIColor.redColor()
+        //configuration.fullScreen = true
+        //KVNProgressBackgroundType.Blurred;
+        //KVNProgress.setConfiguration(configuration)
+        KVNProgress.showWithStatus("", onView: self.view)
+        //KVNProgress.show()
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -53,7 +70,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             
-                            self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.delay(2, closure: {KVNProgress.dismiss()})
+                            
+                            self.movies = (responseDictionary["results"] as? [NSDictionary])
+                            self.filteredData = self.movies
                             self.tableView.reloadData()
                     }
                 }
@@ -63,8 +83,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl = UIRefreshControl()
         refreshControl!.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl!, atIndex: 0)
-        
-        refreshControl?.backgroundColor = UIColor.blackColor()
         
         // Do any additional setup after loading the view.
     }
@@ -76,32 +94,56 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if let movies = movies {
-            return movies.count
+//        if let movies = movies {
+//            return movies.count
+//        } else {
+//            return 0;
+//        }
+        
+        if let filteredData = filteredData {
+            return filteredData.count
         } else {
-            return 0;
+            return 0
         }
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
+        let movie = filteredData[indexPath.row]
         
-        let movie = movies![indexPath.row]
+        //let movie = movies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
-        let posterPath = movie["poster_path"] as! String
+        //let posterPath = movie["poster_path"] as? String
+        //print (posterPath)
         
-        let baseUrl = "http://image.tmdb.org/t/p/w500"
-        let imageUrl = NSURL(string: baseUrl + posterPath)
+        let placeHolderImage = UIImage(named: "noPoster.jpg")
+        
+        if let posterPath = movie["poster_path"] as? String {
+            let baseUrl = "http://image.tmdb.org/t/p/w500"
+            let imageUrl = NSURL(string: baseUrl + posterPath)
+            cell.posterView.setImageWithURL(imageUrl!)
+            
+        }
+        else {
+            cell.posterView.image = placeHolderImage
+        }
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
-        cell.posterView.setImageWithURL(imageUrl!)
         
         print("row \(indexPath.row)")
         return cell
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredData = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
+            return (movie["title"] as! String).rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
+        })
+        
+        self.tableView.reloadData()
+    }
 
     /*
     // MARK: - Navigation

@@ -14,6 +14,7 @@
 		C99F10471C42322D00A3B0D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F10451C42322D00A3B0D3 /* LaunchScreen.storyboard */; };
 		C99F104F1C42EEAB00A3B0D3 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99F104E1C42EEAB00A3B0D3 /* MoviesViewController.swift */; };
 		C99F10521C42FCCD00A3B0D3 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99F10511C42FCCD00A3B0D3 /* MovieCell.swift */; };
+		C99F10551C4B244C00A3B0D3 /* noPoster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C99F10541C4B244C00A3B0D3 /* noPoster.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		C99F10481C42322D00A3B0D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C99F104E1C42EEAB00A3B0D3 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		C99F10511C42FCCD00A3B0D3 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		C99F10541C4B244C00A3B0D3 /* noPoster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noPoster.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				C99F10431C42322D00A3B0D3 /* Assets.xcassets */,
 				C99F10451C42322D00A3B0D3 /* LaunchScreen.storyboard */,
 				C99F10481C42322D00A3B0D3 /* Info.plist */,
+				C99F10541C4B244C00A3B0D3 /* noPoster.jpg */,
 			);
 			path = Flicks;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C99F10471C42322D00A3B0D3 /* LaunchScreen.storyboard in Resources */,
+				C99F10551C4B244C00A3B0D3 /* noPoster.jpg in Resources */,
 				C99F10441C42322D00A3B0D3 /* Assets.xcassets in Resources */,
 				C99F10421C42322D00A3B0D3 /* Main.storyboard in Resources */,
 			);

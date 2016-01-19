@@ -21,9 +21,83 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     var refreshControl: UIRefreshControl?
     var configuration: KVNProgressConfiguration = KVNProgressConfiguration()
     
-    /*------------------------------------------
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        searchBar.delegate = self
+        filteredData = movies
+        
+        KVNProgress.showWithStatus("", onView: self.view)
+        
+        refreshControl = UIRefreshControl()
+        refreshControl!.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl!, atIndex: 0)
+        
+        networkRequest()
+        
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if let filteredData = filteredData {
+            return filteredData.count
+        } else {
+            return 0
+        }
+        
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
+        let movie = filteredData[indexPath.row]
+        
+        let title = movie["title"] as! String
+        let overview = movie["overview"] as! String
+        
+        let placeHolderImage = UIImage(named: "noPoster.jpg")
+        
+        if let posterPath = movie["poster_path"] as? String {
+            let baseUrl = "http://image.tmdb.org/t/p/w500"
+            let imageUrl = NSURL(string: baseUrl + posterPath)
+            cell.posterView.setImageWithURL(imageUrl!)
+            
+        }
+        else {
+            cell.posterView.image = placeHolderImage
+        }
+        
+        cell.titleLabel.text = title
+        cell.overviewLabel.text = overview
+        
+        print("row \(indexPath.row)")
+        return cell
+        
+    }
+    
+    /*----------------------------------------
+     * Search bar function
+    -----------------------------------------*/
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredData = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
+            return (movie["title"] as! String).rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
+        })
+        
+        self.tableView.reloadData()
+    }
+    
+    /*----------------------------------------
      * Refresh functions
-     -----------------------------------------*/
+    -----------------------------------------*/
     func delay(delay:Double, closure:()->()) {
         dispatch_after(
             dispatch_time(
@@ -39,20 +113,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         })
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        searchBar.delegate = self
-        filteredData = movies
-        
-        //configuration.backgroundFillColor = UIColor.redColor()
-        //configuration.fullScreen = true
-        //KVNProgressBackgroundType.Blurred;
-        //KVNProgress.setConfiguration(configuration)
-        KVNProgress.showWithStatus("", onView: self.view)
-        //KVNProgress.show()
+    /*----------------------------------------
+     * Network Request function
+    -----------------------------------------*/
+
+    func networkRequest() {
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -80,70 +145,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         });
         task.resume()
         
-        refreshControl = UIRefreshControl()
-        refreshControl!.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        tableView.insertSubview(refreshControl!, atIndex: 0)
-        
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-//        if let movies = movies {
-//            return movies.count
-//        } else {
-//            return 0;
-//        }
-        
-        if let filteredData = filteredData {
-            return filteredData.count
-        } else {
-            return 0
-        }
-        
+    // removes keyboard from screen after user is done typing in the searchBar
+    @IBAction func onTap(sender: AnyObject) {
+        view.endEditing(true)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = filteredData[indexPath.row]
-        
-        //let movie = movies![indexPath.row]
-        let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
-        //let posterPath = movie["poster_path"] as? String
-        //print (posterPath)
-        
-        let placeHolderImage = UIImage(named: "noPoster.jpg")
-        
-        if let posterPath = movie["poster_path"] as? String {
-            let baseUrl = "http://image.tmdb.org/t/p/w500"
-            let imageUrl = NSURL(string: baseUrl + posterPath)
-            cell.posterView.setImageWithURL(imageUrl!)
-            
-        }
-        else {
-            cell.posterView.image = placeHolderImage
-        }
-        
-        cell.titleLabel.text = title
-        cell.overviewLabel.text = overview
-        
-        print("row \(indexPath.row)")
-        return cell
-    }
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredData = searchText.isEmpty ? movies : movies!.filter({(movie: NSDictionary) -> Bool in
-            return (movie["title"] as! String).rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil
-        })
-        
-        self.tableView.reloadData()
-    }
 
     /*
     // MARK: - Navigation

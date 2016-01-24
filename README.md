@@ -34,7 +34,8 @@ Here's a walkthrough of implemented user stories:
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
-
+*Week 1:* 
+Completing the required functions outlined in the videos CodePath provided was pretty simple, except for implementing the 3rd party loading state via CocoaPods. Even though I looked through all the documentation and wrote the necessary code, the loading state was not showing up when I ran my app. I also found implementing the search bar a bit difficult since I had to translate CodePath's guide, which used searching Strings as an example, to NSDictionaries.
 Describe any challenges encountered while building the app.
 
 ## License

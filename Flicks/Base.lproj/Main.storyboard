@@ -75,6 +75,20 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" id="CdW-Zt-cq6">
+                                <rect key="frame" x="0.0" y="108" width="320" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="f3O-9J-Njf">
+                                        <rect key="frame" x="114" y="4" width="93" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -84,6 +98,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Flicks" id="PwN-as-l4b"/>
                     <connections>
+                        <outlet property="networkErrorView" destination="CdW-Zt-cq6" id="eXR-Q6-jyw"/>
                         <outlet property="searchBar" destination="a4g-QZ-Tcs" id="Jls-PA-BX5"/>
                         <outlet property="tableView" destination="8XT-FN-p9V" id="QPf-di-tas"/>
                     </connections>

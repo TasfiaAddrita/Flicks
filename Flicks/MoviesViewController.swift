@@ -14,6 +14,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var networkErrorView: UIView!
     
     var movies: [NSDictionary]?
     var filteredData : [NSDictionary]!
@@ -28,6 +29,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         searchBar.delegate = self
         filteredData = movies
+        
+        networkErrorView.hidden = true
         
         KVNProgress.showWithStatus("", onView: self.view)
         
@@ -128,6 +131,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegateQueue:NSOperationQueue.mainQueue()
         )
         
+        self.delay(2, closure: {KVNProgress.dismiss()})
+        
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
                 if let data = dataOrNil {
@@ -135,12 +140,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             
-                            self.delay(2, closure: {KVNProgress.dismiss()})
+                            // self.delay(2, closure: {KVNProgress.dismiss()})
                             
                             self.movies = (responseDictionary["results"] as? [NSDictionary])
                             self.filteredData = self.movies
                             self.tableView.reloadData()
                     }
+                }
+                if error != nil {
+                    self.networkErrorView.hidden = false
                 }
         });
         task.resume()

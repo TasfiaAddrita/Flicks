@@ -25,6 +25,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //navigationController?.navigationBar.barTintColor = UIColor(red: 12, green: 126, blue: 126, alpha: 1)
+        
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
@@ -35,7 +37,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         KVNProgress.showWithStatus("", onView: self.view)
         
         refreshControl = UIRefreshControl()
-        refreshControl!.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl?.backgroundColor = UIColor(red: 64, green: 64, blue: 64, alpha: 0)
+        refreshControl?.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+        refreshControl!.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl!, atIndex: 0)
         
         networkRequest()
@@ -110,10 +114,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             dispatch_get_main_queue(), closure)
     }
     
-    func onRefresh() {
-        delay(2, closure: {
-            self.refreshControl!.endRefreshing()
-        })
+//    func onRefresh() {
+//        delay(2, closure: {
+//            self.refreshControl!.endRefreshing()
+//        })
+//    }
+    
+    func onRefresh(refreshControl: UIRefreshControl) {
+        networkRequest()
+        refreshControl.endRefreshing()
     }
     
     /*----------------------------------------
@@ -131,7 +140,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegateQueue:NSOperationQueue.mainQueue()
         )
         
-        self.delay(2, closure: {KVNProgress.dismiss()})
+        //self.delay(2, closure: {KVNProgress.dismiss()})
         
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
@@ -140,11 +149,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             
-                            // self.delay(2, closure: {KVNProgress.dismiss()})
+                            self.delay(2, closure: {KVNProgress.dismiss()})
                             
                             self.movies = (responseDictionary["results"] as? [NSDictionary])
                             self.filteredData = self.movies
                             self.tableView.reloadData()
+                            
+                            //KVNProgress.dismiss()
                     }
                 }
                 if error != nil {
@@ -156,10 +167,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     // removes keyboard from screen after user is done typing in the searchBar
-    @IBAction func onTap(sender: AnyObject) {
-        view.endEditing(true)
-    }
-    
+//    @IBAction func onTap(sender: AnyObject) {
+//        view.endEditing(true)
+//    }
 
     /*
     // MARK: - Navigation

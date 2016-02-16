@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="c4V-Vi-4Pp">
             <objects>
-                <navigationController storyboardIdentifier="MoviesNavigationStoryboardId" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bYT-To-V2K" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MoviesNavigationStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bYT-To-V2K" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ASC-tz-XkK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -129,7 +129,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iYJ-La-wpI">
                                                 <rect key="frame" x="8" y="8" width="304" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>

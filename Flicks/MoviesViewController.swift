@@ -73,16 +73,48 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.overviewLabel.text = overview
         
         let placeHolderImage = UIImage(named: "noPoster.jpg")
-        let baseUrl = "http://image.tmdb.org/t/p/w500"
         if let posterPath = movie["poster_path"] as? String {
-            let imageUrl = NSURL(string: baseUrl + posterPath)
-            cell.posterView.setImageWithURL(imageUrl!)
+            fadeInImage(posterPath, cell: cell)
         } else {
             cell.posterView.image = placeHolderImage
         }
         
         print("row \(indexPath.row)")
         return cell
+        
+    }
+    
+    /*----------------------------------------
+    * All images fade in as they are loading.    
+    -----------------------------------------*/
+    
+    func fadeInImage(posterPath : String, cell : MovieCell) {
+        
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        let imageUrl = baseUrl + posterPath
+        let imageRequest = NSURLRequest(URL: NSURL(string: imageUrl)!)
+        
+        cell.posterView.setImageWithURLRequest(
+            imageRequest,
+            placeholderImage: nil,
+            success: { (imageRequest, imageResponse, image) -> Void in
+                
+                // imageResponse will be nil if the image is cached
+                if imageResponse != nil {
+                    print("Image was NOT cached, fade in image")
+                    cell.posterView.alpha = 0.0
+                    cell.posterView.image = image
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        cell.posterView.alpha = 1.0
+                    })
+                } else {
+                    print("Image was cached so just update the image")
+                    cell.posterView.image = image
+                }
+            },
+            failure: { (imageRequest, imageResponse, error) -> Void in
+                // do something for the failure condition
+        })
         
     }
     

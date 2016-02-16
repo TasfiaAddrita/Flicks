@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        let nowPlayingNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationStoryboardId") as! UINavigationController
+        let nowPlayingNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationStoryboard") as! UINavigationController
         let nowPlayingViewController = nowPlayingNavigationController.topViewController as! MoviesViewController
         nowPlayingViewController.endpoint = "now_playing"
         nowPlayingNavigationController.tabBarItem.title = "Now Playing"
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         nowPlayingNavigationController.navigationBar.barTintColor = UIColor(red: 12/255, green: 126/255, blue: 126/255, alpha: 1)
         nowPlayingNavigationController.navigationBar.tintColor = UIColor.darkGrayColor()
         
-        let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationStoryboardId") as! UINavigationController
+        let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationStoryboard") as! UINavigationController
         let topRatedViewController = topRatedNavigationController.topViewController as! MoviesViewController
         topRatedViewController.endpoint = "top_rated"
         topRatedNavigationController.tabBarItem.title = "Top Rated"

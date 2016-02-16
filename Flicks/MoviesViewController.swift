@@ -139,7 +139,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             
-                            self.delay(2, closure: {KVNProgress.dismiss()})
+                            self.delay(1, closure: {KVNProgress.dismiss()})
                             
                             self.movies = (responseDictionary["results"] as? [NSDictionary])
                             self.filteredData = self.movies

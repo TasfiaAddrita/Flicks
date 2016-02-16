@@ -82,10 +82,10 @@
 		C99F103B1C42322D00A3B0D3 /* Flicks */ = {
 			isa = PBXGroup;
 			children = (
+				C99F10401C42322D00A3B0D3 /* Main.storyboard */,
 				C99F10531C42FCE100A3B0D3 /* View Controllers */,
 				C99F10501C42FBFA00A3B0D3 /* Views */,
 				C99F103C1C42322D00A3B0D3 /* AppDelegate.swift */,
-				C99F10401C42322D00A3B0D3 /* Main.storyboard */,
 				C99F10431C42322D00A3B0D3 /* Assets.xcassets */,
 				C99F10451C42322D00A3B0D3 /* LaunchScreen.storyboard */,
 				C99F10481C42322D00A3B0D3 /* Info.plist */,

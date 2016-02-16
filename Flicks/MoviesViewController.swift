@@ -18,14 +18,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var movies: [NSDictionary]?
     var filteredData : [NSDictionary]!
-    
+    var endpoint : String!
     var refreshControl: UIRefreshControl?
     var configuration: KVNProgressConfiguration = KVNProgressConfiguration()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //navigationController?.navigationBar.barTintColor = UIColor(red: 12, green: 126, blue: 126, alpha: 1)
+        self.navigationItem.title = "Flicks"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -36,6 +36,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         KVNProgress.showWithStatus("", onView: self.view)
         
+        // pull to refresh
         refreshControl = UIRefreshControl()
         refreshControl?.backgroundColor = UIColor(red: 64, green: 64, blue: 64, alpha: 0)
         refreshControl?.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
@@ -43,8 +44,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.insertSubview(refreshControl!, atIndex: 0)
         
         networkRequest()
-        
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,22 +67,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = filteredData[indexPath.row]
         
         let title = movie["title"] as! String
+        cell.titleLabel.text = title
+        
         let overview = movie["overview"] as! String
+        cell.overviewLabel.text = overview
         
         let placeHolderImage = UIImage(named: "noPoster.jpg")
-        
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
         if let posterPath = movie["poster_path"] as? String {
-            let baseUrl = "http://image.tmdb.org/t/p/w500"
             let imageUrl = NSURL(string: baseUrl + posterPath)
             cell.posterView.setImageWithURL(imageUrl!)
-            
-        }
-        else {
+        } else {
             cell.posterView.image = placeHolderImage
         }
-        
-        cell.titleLabel.text = title
-        cell.overviewLabel.text = overview
         
         print("row \(indexPath.row)")
         return cell
@@ -114,12 +110,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             dispatch_get_main_queue(), closure)
     }
     
-//    func onRefresh() {
-//        delay(2, closure: {
-//            self.refreshControl!.endRefreshing()
-//        })
-//    }
-    
     func onRefresh(refreshControl: UIRefreshControl) {
         networkRequest()
         refreshControl.endRefreshing()
@@ -132,7 +122,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func networkRequest() {
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = NSURLRequest(URL: url!)
         let session = NSURLSession(
             configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
@@ -171,14 +161,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 //        view.endEditing(true)
 //    }
 
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+        
+        print("prepare for segue called")
     }
-    */
-
 }

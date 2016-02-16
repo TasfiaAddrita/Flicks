@@ -79,7 +79,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             cell.posterView.image = placeHolderImage
         }
         
-        print("row \(indexPath.row)")
+        //print("row \(indexPath.row)")
         return cell
         
     }
@@ -98,24 +98,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             imageRequest,
             placeholderImage: nil,
             success: { (imageRequest, imageResponse, image) -> Void in
-                
-                // imageResponse will be nil if the image is cached
-                if imageResponse != nil {
-                    print("Image was NOT cached, fade in image")
                     cell.posterView.alpha = 0.0
                     cell.posterView.image = image
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
                         cell.posterView.alpha = 1.0
                     })
-                } else {
-                    print("Image was cached so just update the image")
-                    cell.posterView.image = image
-                }
             },
             failure: { (imageRequest, imageResponse, error) -> Void in
                 // do something for the failure condition
         })
-        
     }
     
     /*----------------------------------------
@@ -204,6 +195,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.movie = movie
         
-        print("prepare for segue called")
+        //print("prepare for segue called")
     }
 }

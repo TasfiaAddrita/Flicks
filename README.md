@@ -37,6 +37,46 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 **Week 1:** 
 Completing the required functions outlined in the videos CodePath provided was pretty simple, except for implementing the 3rd party loading state via CocoaPods. Even though I looked through all the documentation and wrote the necessary code, the loading state was not showing up when I ran my app. I also found implementing the search bar a bit difficult since I had to translate CodePath's guide, which used searching Strings as an example, to NSDictionaries.
 
+# Project 2 - *Flicks*
+
+**Flicks** is a movies app displaying box office and top rental DVDs using [The Movie Database API](http://docs.themoviedb.apiary.io/#).
+
+Time spent: **X** hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [z] User can view movie details by tapping on a cell.
+- [x] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [x] Customize the selection effect of the cell.
+
+The following **optional** features are implemented:
+
+- [x] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [x] Customize the navigation bar.
+
+The following **additional** features are implemented:
+
+- [ ] List anything else that you can get done to improve the app functionality!
+
+Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
+
+1. 
+2. 
+
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+## Notes
+
+Describe any challenges encountered while building the app.
+
 ## License
 
     Copyright [2016] [Tasfia Addrita]

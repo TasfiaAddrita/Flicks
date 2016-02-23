@@ -23,14 +23,14 @@ class DetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
-        
         let title = movie["title"] as? String
         titleLabel.text = title?.uppercaseString
         
         let overview = movie["overview"] as? String
         overviewLabel.text = overview
         overviewLabel.sizeToFit()
+        
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
         let placeHolderImage = UIImage(named: "noPoster.jpg")
         
@@ -39,8 +39,6 @@ class DetailViewController: UIViewController {
         } else {
             posterImageView.image = placeHolderImage
         }
-        
-        print(movie)
     }
 
     override func didReceiveMemoryWarning() {

@@ -44,6 +44,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.insertSubview(refreshControl!, atIndex: 0)
         
         networkRequest()
+        
+        let textFieldInsideSearchBar = searchBar.valueForKey("searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.whiteColor()
+        
+        // attempt to hide keyboard when user taps on anything; it works but user must put in more effort to tap on cell
+        let gestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "hideKeyboard")
+        self.view.addGestureRecognizer(gestureRecognizer)
+        
+        let gestureRecognizer2: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "networkErrorReboot")
+        self.networkErrorView.addGestureRecognizer(gestureRecognizer2)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,7 +90,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             cell.posterView.image = placeHolderImage
         }
         
-        //print("row \(indexPath.row)")
         return cell
         
     }
@@ -121,6 +131,20 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.tableView.reloadData()
     }
     
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.view.endEditing(true)
+    }
+    
+    func hideKeyboard() {
+        if searchBar.isFirstResponder() {
+            self.view.endEditing(true)
+        }
+    }
+    
     /*----------------------------------------
      * Refresh functions
     -----------------------------------------*/
@@ -153,7 +177,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegateQueue:NSOperationQueue.mainQueue()
         )
         
-        //self.delay(2, closure: {KVNProgress.dismiss()})
+        self.delay(1, closure: {KVNProgress.dismiss()})
         
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
@@ -162,13 +186,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
                             
-                            self.delay(1, closure: {KVNProgress.dismiss()})
+                            //self.delay(1, closure: {KVNProgress.dismiss()})
                             
                             self.movies = (responseDictionary["results"] as? [NSDictionary])
                             self.filteredData = self.movies
                             self.tableView.reloadData()
-                            
-                            //KVNProgress.dismiss()
                     }
                 }
                 if error != nil {
@@ -179,11 +201,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    // removes keyboard from screen after user is done typing in the searchBar
-//    @IBAction func onTap(sender: AnyObject) {
-//        view.endEditing(true)
-//    }
-
+    func networkErrorReboot() {
+        networkRequest()
+        networkErrorView.hidden = true
+    }
     
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -194,7 +215,5 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.movie = movie
-        
-        //print("prepare for segue called")
     }
 }

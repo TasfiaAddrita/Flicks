@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -24,17 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let nowPlayingViewController = nowPlayingNavigationController.topViewController as! MoviesViewController
         nowPlayingViewController.endpoint = "now_playing"
         nowPlayingNavigationController.tabBarItem.title = "Now Playing"
-        //nowPlayingNavigationController.tabBarItem.image = UIImage(named: "now_playing_smaller")
+        nowPlayingNavigationController.tabBarItem.image = UIImage(named: "now_playing")
         nowPlayingNavigationController.navigationBar.barTintColor = UIColor(red: 12/255, green: 126/255, blue: 126/255, alpha: 1)
-        nowPlayingNavigationController.navigationBar.tintColor = UIColor.darkGrayColor()
+        nowPlayingNavigationController.navigationBar.tintColor = UIColor(red: 64/255, green: 64/255, blue: 64/255, alpha: 1)
         
         let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationStoryboard") as! UINavigationController
         let topRatedViewController = topRatedNavigationController.topViewController as! MoviesViewController
         topRatedViewController.endpoint = "top_rated"
         topRatedNavigationController.tabBarItem.title = "Top Rated"
-        //topRatedNavigationController.tabBarItem.image = UIImage(named: "star")
+        topRatedNavigationController.tabBarItem.image = UIImage(named: "top_rated")
         topRatedNavigationController.navigationBar.barTintColor = UIColor(red: 12/255, green: 126/255, blue: 126/255, alpha: 1)
-        topRatedNavigationController.navigationBar.tintColor = UIColor.darkGrayColor()
+        topRatedNavigationController.navigationBar.tintColor = UIColor(red: 64/255, green: 64/255, blue: 64/255, alpha: 1)
         
         // Set up the Tab Bar Controller to have two tabs
         let tabBarController = UITabBarController()
